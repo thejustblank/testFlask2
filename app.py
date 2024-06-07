@@ -136,7 +136,7 @@ def select_date():
                     align-items: center;
                     height: 100vh;
                     margin: 0;
-                    background-color: #6868AC;
+                    background-color: #F891B3;
                 }
                 h1 {
                     text-align: center;
@@ -175,7 +175,7 @@ def confirmation():
                     align-items: center;
                     height: 100vh;
                     margin: 0;
-                    background-color: #6868AC;
+                    background-color: #F891B3;
                 }
                 div {
                     font-family: 'Calligraffitti', cursive;
