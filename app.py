@@ -2,14 +2,9 @@ from flask import Flask, render_template_string, request, redirect, url_for
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        selected_date = request.form.get('date')
-        selected_movie = request.form.get('movie')
-        # Redirect to the confirmation page with the selected date and movie
-        return redirect(url_for('confirmation', date=selected_date, movie=selected_movie))
-
+# Home page
+@app.route('/')
+def home():
     return render_template_string('''
         <!DOCTYPE html>
         <html lang="en">
@@ -25,7 +20,7 @@ def index():
                     align-items: center;
                     height: 100vh;
                     margin: 0;
-                    background-color: #f5f5f5;
+                    background-color: #F891B3;
                 }
                 h1 {
                     text-align: center;
@@ -52,10 +47,6 @@ def index():
                 #no-btn {
                     position: absolute;
                 }
-                #form-container {
-                    display: none;
-                    margin-top: 20px;
-                }
             </style>
             <script>
                 function moveButton() {
@@ -65,43 +56,106 @@ def index():
                     btn.style.left = x + 'px';
                     btn.style.top = y + 'px';
                 }
-
-                function showForm() {
-                    document.getElementById('form-container').style.display = 'block';
-                }
             </script>
         </head>
         <body>
-            <h1>Would you like to go on a date with me?</h1>
+            <h1>Болзох уу?</h1>
             <div class="button-container">
-                <button class="button" onclick="showForm()" id="yes-btn">Yes</button>
-                <button class="button" id="no-btn" onmouseover="moveButton()">No</button>
-            </div>
-            <div id="form-container">
-                <form method="post">
-                    <div>
-                        <label for="date">Choose a date:</label>
-                        <input type="date" id="date" name="date">
-                    </div>
-                    <div>
-                        <label for="movie">Choose a movie:</label>
-                        <select id="movie" name="movie">
-                            <option value="inception">Inception</option>
-                            <option value="interstellar">Interstellar</option>
-                            <option value="the-dark-knight">The Dark Knight</option>
-                            <option value="pulp-fiction">Pulp Fiction</option>
-                            <option value="the-godfather">The Godfather</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button type="submit" class="button">Submit</button>
-                    </div>
-                </form>
+                <a href="{{ url_for('select_movie') }}" class="button" id="yes-btn">Тэгье</a>
+                <button class="button" id="no-btn" onmouseover="moveButton()">Үгүй</button>
             </div>
         </body>
         </html>
     ''')
 
+# Movie selection page
+@app.route('/select_movie', methods=['GET', 'POST'])
+def select_movie():
+    if request.method == 'POST':
+        selected_movie = request.form.get('movie')
+        return redirect(url_for('select_date', movie=selected_movie))
+
+    return render_template_string('''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Select Movie</title>
+            <style>
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #F891B3;
+                }
+                h1 {
+                    text-align: center;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Кино сонгох</h1>
+            <form method="POST">
+                <label for="movie">Кино:</label>
+                <select name="movie" id="movie">
+                    <option value="Movie 1">Movie 1</option>
+                    <option value="Movie 2">Movie 2</option>
+                    <option value="Movie 3">Movie 3</option>
+                </select>
+                <br>
+                <button type="submit">Next</button>
+            </form>
+        </body>
+        </html>
+    ''')
+
+# Date selection page
+@app.route('/select_date', methods=['GET', 'POST'])
+def select_date():
+    selected_movie = request.args.get('movie')
+    if request.method == 'POST':
+        selected_date = request.form.get('date')
+        return redirect(url_for('confirmation', date=selected_date, movie=selected_movie))
+
+    return render_template_string('''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Select Date</title>
+            <style>
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #6868AC;
+                }
+                h1 {
+                    text-align: center;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Өдөр сонгох</h1>
+            <form method="POST">
+                <label for="date">Өдөр:</label>
+                <input type="date" name="date" id="date" required>
+                <br>
+                <button type="submit">Confirm</button>
+            </form>
+        </body>
+        </html>
+    ''', movie=selected_movie)
+
+# Confirmation page
 @app.route('/confirmation')
 def confirmation():
     selected_date = request.args.get('date')
@@ -124,30 +178,30 @@ def confirmation():
                     background-color: #6868AC;
                 }
                 div {
-    font-family: 'Calligraffitti', cursive;
-    font-weight: 700;
-    font-size: 2.5em; /* Adjusted font size for readability */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    letter-spacing: 0.02em;
-    text-align: center;
-    color: #F9f1cc;
-    text-shadow: 5px 5px 0px #FFB650,
-      10px 10px 0px #FFD662,
-      15px 15px 0px #FF80BF,
-      20px 20px 0px #EF5097,
-      25px 25px 0px #6868AC,
-      30px 30px 0px #90B1E0;
-  }
+                    font-family: 'Calligraffitti', cursive;
+                    font-weight: 700;
+                    font-size: 2.5em;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    letter-spacing: 0.02em;
+                    text-align: center;
+                    color: #F9f1cc;
+                    text-shadow: 5px 5px 0px #FFB650,
+                        10px 10px 0px #FFD662,
+                        15px 15px 0px #FF80BF,
+                        20px 20px 0px #EF5097,
+                        25px 25px 0px #6868AC,
+                        30px 30px 0px #90B1E0;
+                }
             </style>
         </head>
         <body>
-            <div>Болзох өдрөө догдлон хүлээе🤗</div>
+            <div>Болзох өдрөө догдлон хүлээе🤗<br>Кино: {{ movie }}<br>Өдөр: {{ date }}</div>
         </body>
         </html>
-    ''')
+    ''', date=selected_date, movie=selected_movie)
 
 if __name__ == '__main__':
     app.run(debug=True)
