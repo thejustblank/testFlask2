@@ -61,7 +61,7 @@ def home():
         <body>
             <h1>Болзох уу?</h1>
             <div class="button-container">
-                <a href="{{ url_for('select_movie') }}" class="button" id="yes-btn">Тэгье</a>
+                <button href="{{ url_for('select_movie') }}" class="button" id="yes-btn">Тэгье</button>
                 <button class="button" id="no-btn" onmouseover="moveButton()">Үгүй</button>
             </div>
         </body>
