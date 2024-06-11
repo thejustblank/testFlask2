@@ -7,65 +7,77 @@ app = Flask(__name__)
 def home():
     return render_template_string('''
         <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Yes or No</title>
-            <style>
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #F891B3;
-                }
-                h1 {
-                    text-align: center;
-                }
-                .button-container {
-                    display: flex;
-                    justify-content: center;
-                    margin-top: 20px;
-                }
-                .button {
-                    display: inline-block;
-                    margin: 10px;
-                    padding: 0 20px;
-                    text-align: center;
-                    text-decoration: none;
-                    font: bold 12px/25px Arial, sans-serif;
-                    background-color: rgba(248, 145, 179, 1);
-                    color: #fff;
-                    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-                    border-radius: 30px;
-                    box-shadow: 1px 1px 1px rgba(248, 145, 179, 1), inset 1px 1px 1px rgba(248, 145, 179, 1);
-                    transition: all 0.15s ease;
-                }
-                #no-btn {
-                    position: absolute;
-                }
-            </style>
-            <script>
-                function moveButton() {
-                    var btn = document.getElementById('no-btn');
-                    var x = Math.random() * (window.innerWidth - btn.clientWidth);
-                    var y = Math.random() * (window.innerHeight - btn.clientHeight);
-                    btn.style.left = x + 'px';
-                    btn.style.top = y + 'px';
-                }
-            </script>
-        </head>
-        <body>
-            <h1>Болзох уу?</h1>
-            <div class="button-container">
-                <button href="{{ url_for('select_movie') }}" class="button" id="yes-btn">Тэгье</button>
-                <button class="button" id="no-btn" onmouseover="moveButton()">Үгүй</button>
-            </div>
-        </body>
-        </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yes or No</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #F891B3;
+        }
+        h1 {
+            text-align: center;
+        }
+        .button-container::after {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+        }
+        .button {
+            margin: 10px;
+            padding: 0 20px;
+            text-align: center;
+            text-decoration: none;
+            font: bold 12px/25px Arial, sans-serif;
+            background-color: rgba(248, 145, 179, 1);
+            color: #fff;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+            border-radius: 30px;
+            box-shadow: 1px 1px 1px rgba(248, 145, 179, 1), inset 1px 1px 1px rgba(248, 145, 179, 1);
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        #no-btn {
+            position: absolute;
+        }
+        #yes-btn {
+            position: absolute;
+        }
+    </style>
+    <script>
+        function moveButton() {
+            var btn = document.getElementById('no-btn');
+            var x = Math.random() * (window.innerWidth - btn.clientWidth);
+            var y = Math.random() * (window.innerHeight - btn.clientHeight);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+        function moveButton1() {
+            var btn = document.getElementById('yes-btn');
+            var x = Math.random() * (window.innerWidth - btn.clientWidth);
+            var y = Math.random() * (window.innerHeight - btn.clientHeight);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+    </script>
+</head>
+<body>
+    <h1>Болзох уу?</h1>
+    <div class="button-container">
+        <button class="button" id="yes-btn" onmouseover="moveButton1()">Тэгье</button>
+        <button class="button" id="no-btn" onmouseover="moveButton()">Үгүй</button>
+    </div>
+</body>
+</html>
     ''')
 
 # Movie selection page
