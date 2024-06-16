@@ -49,9 +49,6 @@ def home():
         #no-btn {
             position: absolute;
         }
-        #yes-btn {
-            position: absolute;
-        }
     </style>
     <script>
         function moveButton() {
@@ -73,13 +70,20 @@ def home():
 <body>
     <h1>Болзох уу?</h1>
     <div class="button-container">
-        <button class="button" id="yes-btn" onmouseover="moveButton1()">Тэгье</button>
+        <button class="button" type="submit" onclick="window.location.href='/select_movie'">Тэгье</button>
         <button class="button" id="no-btn" onmouseover="moveButton()">Үгүй</button>
     </div>
 </body>
 </html>
     ''')
 
+movie_posters = {
+    'deadpool': 'deadpool.jpg',
+    'inside_out': 'inside_out.jpg',
+    'zura 3': 'zura.jpg',
+    'haikyuu': 'haikyuu.jpg',
+    'ОЧООДСОНГОЁ': 'ОЧООДСОНГОЁ.jpg'
+}
 # Movie selection page
 @app.route('/select_movie', methods=['GET', 'POST'])
 def select_movie():
@@ -104,26 +108,58 @@ def select_movie():
                     margin: 0;
                     background-color: #F891B3;
                 }
-                h1 {
+                .movie-container {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 20px;
+                }
+                .button-container {
                     text-align: center;
+                }
+                label {
+                    text-align: center;
+                }
+                img {
+                    width: 150px;
+                    height: 200px;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+                button {
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    background-color: #FFF;
+                    border: none;
+                    cursor: pointer;
+                }
+                button:hover {
+                    background-color: #EEE;
                 }
             </style>
         </head>
         <body>
             <h1>Кино сонгох</h1>
             <form method="POST">
-                <label for="movie">Кино:</label>
-                <select name="movie" id="movie">
-                    <option value="Movie 1">Movie 1</option>
-                    <option value="Movie 2">Movie 2</option>
-                    <option value="Movie 3">Movie 3</option>
-                </select>
-                <br>
-                <button type="submit">Next</button>
+                <div class="movie-container">
+                    {% for movie, poster_url in movie_posters.items() %}
+                        <label>
+                            <img src="{{ url_for('static', filename=poster_url) }}" alt="Movie Poster"><br>
+                            <input type="radio" name="movie" value="{{ movie }}"> {{ movie }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="button-container">
+                    <button type="submit">Next</button>
+                </div>
             </form>
         </body>
         </html>
-    ''')
+    ''', movie_posters=movie_posters)
+
 
 # Date selection page
 @app.route('/select_date', methods=['GET', 'POST'])
